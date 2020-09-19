@@ -1,5 +1,0 @@
-t = open('file.txt', 'r')
-s = t.read()
-s = s.split()
-print(s)
-t.close()
