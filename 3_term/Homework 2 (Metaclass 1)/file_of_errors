@@ -1,0 +1,4 @@
+TypeError('__init__() takes 3 positional arguments but 4 were given')
+TypeError("unsupported operand type(s) for +: 'int' and 'str'")
+TypeError("unsupported operand type(s) for /: 'int' and 'str'")
+ZeroDivisionError('division by zero')
