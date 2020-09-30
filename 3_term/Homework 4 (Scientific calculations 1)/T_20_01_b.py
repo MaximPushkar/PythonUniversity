@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 def func2(n):
-    return ((n-1)**4 - (n+2)**4) / ((2*n + 1)**3 - (n - 1)**3)
+    return ((n-1)**4 - (n+2)**4) / ((2*n + 1)**3 + (n - 1)**3)
 
 
 def gety(f, x):
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     x, y = vect(func2, *t)
 
-    b = -12/7
+    b = -4/3
     eps = 0.001
     print(plot_seq(x, y, b, eps, False))
     plt.show()
