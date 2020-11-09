@@ -32,9 +32,6 @@ def dct_workers(file):
         return dct
 
 
-# "Workers_list.txt"
-
-
 def find_bad_sites(file):
     with open(file, "r", encoding="utf-8") as inp:
         text = inp.read()
@@ -65,8 +62,32 @@ def get_names(file_1, file_2):
 def sort_data(file_1, file_2):
     lst = get_names(file_1, file_2)
     lst_names = [i[3] for i in lst]
+    dct = {}
     for name in lst_names:
-        pass
+        dct[name] = lst_names.count(name)
+    dct = {k: v for k, v in sorted(dct.items(), key=lambda item: item[1], reverse=True)}
+    return dct
+
+
+def good_representation(file_1, file_2):
+    dct = sort_data(file_1, file_2)
+    to_write_list = []
+    counter = 1
+    for name in dct.keys():
+        s = str(counter) + ') ' + name + '; ' + str(dct[name]) + ' порушень'
+        for event in get_names(file_1, file_2):
+            if event[3] == name:
+                s += ';  ' + event[0] + ', ' + event[2]
+        to_write_list.append(s)
+        counter += 1
+    return to_write_list
+
+
+def write_to_file(file_1, file_2, file_to):
+    lst = good_representation(file_1, file_2)
+    with open(file_to, "w", encoding="utf-8") as out:
+        for s in lst:
+            out.write(s + '\n')
 
 
 if __name__ == '__main__':
@@ -76,6 +97,9 @@ if __name__ == '__main__':
     with open("output.txt", "w", encoding="utf-8") as out:
         out.write(s)"""
 
-    print(dct_workers("Workers_list.txt"))
-    print(find_bad_sites("Site_visited.txt"))
-    print(get_names("Workers_list.txt", "Site_visited.txt"))
+    # print(dct_workers("Workers_list.txt"))
+    # print(find_bad_sites("Site_visited.txt"))
+    # print(get_names("Workers_list.txt", "Site_visited.txt"))
+    # print(sort_data("Workers_list.txt", "Site_visited.txt"))
+    # print(good_representation("Workers_list.txt", "Site_visited.txt"))
+    write_to_file("Workers_list.txt", "Site_visited.txt", 'Result.txt')
