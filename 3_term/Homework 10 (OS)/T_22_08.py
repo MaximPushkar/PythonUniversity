@@ -66,7 +66,8 @@ def scan_dir(dirPath: str):
             filePath = os.path.join(root, name)
             res[filePath] = os.path.getmtime(filePath)
         for name in dirs:
-            res[name] = ""
+            drPath = os.path.join(root, name)
+            res[drPath] = ''
 
     return res
 
@@ -77,6 +78,6 @@ if __name__ == '__main__':
 
     cache_name = generate_cache_name(dirPath)
     dirOld = read_cache(cache_name)
-    compare_versions(dirDict, dirOld)
+    compare_versions(dirOld, dirDict)
 
     write_cache(cache_name, dirDict)
