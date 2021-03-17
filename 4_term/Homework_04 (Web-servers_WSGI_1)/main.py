@@ -21,6 +21,10 @@ RESULT_ROW = """
         </tr>
 """
 
+NAME = """
+
+"""
+
 
 class MatchResults:
 
