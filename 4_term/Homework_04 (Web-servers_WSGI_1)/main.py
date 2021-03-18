@@ -21,8 +21,12 @@ RESULT_ROW = """
         </tr>
 """
 
-NAME = """
+NAME_OPTION = """
+<option value="$TeamName">$TeamName</option>
+"""
 
+STATUS = """
+<h1>$status</h1>
 """
 
 
@@ -83,14 +87,47 @@ class MatchResults:
 
     def __call__(self, environ, start_response):
         path = environ.get("PATH_INFO", "").lstrip("/")
-        params = {"lines": "", "rows": ""}
+        params = {"lines": "", "rows": "", "names": "", "status": ""}
         status = "200 OK"
         headers = [("Content-Type", "text/html; charset=utf-8")]
 
         # http://127.0.0.1:8000/
         if path == "":
-
+            names = ""
+            for team in self.get_data():
+                names += Template(NAME_OPTION).substitute(TeamName=str(team[0]))
+            params["names"] = names
             html = "templates/add_result.html"
+
+        # http://127.0.0.1:8000/operation_status
+        elif path == "operation_status":
+            form = cgi.FieldStorage(fp=environ["wsgi.input"], environ=environ)
+            name_1 = form.getfirst("from", "")
+            name_2 = form.getfirst("to", "")
+            balls_1 = form.getfirst("balls_1", "")
+            balls_2 = form.getfirst("balls_2", "")
+
+            if name_1 and name_2 and balls_1 and balls_2:
+                try:
+                    names = self.get_names()
+                    pos_1 = names.index(name_1)
+                    pos_2 = names.index(name_2)
+                    wb = openpyxl.load_workbook(self._match)
+                    ws = wb.worksheets[0]
+                    ws.append([pos_1 + 1, pos_2 + 1, int(balls_1), int(balls_2)])
+                    wb.save(self._match)
+                    response = "Ваш результат додано до файлу з результатами"
+                except Exception as e:
+                    response = "Виникла помилка " + str(e)
+                    print(e)
+                params["status"] = Template(STATUS).substitute(status=response)
+
+            # Якщо у формі задано недостатньо параметрів, перенаправляємо на головну сторінку
+            else:
+                status = "303 SEE OTHER"
+                headers.append(("Location", "/"))
+            html = "templates/operation_status.html"
+
 
         # http://127.0.0.1:8000/partial
         elif path == "partial":
