@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<teams>
+    <team id="1"  name="Реал Мадрид"/>
+    <team id="2"  name="Барселона"/>
+    <team id="3"  name="Манчестер Юнайтед"/>
+    <team id="4"  name="Челси"/>
+</teams>
