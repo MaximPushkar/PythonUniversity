@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Головна</title>
+</head>
+<body>
+  <h1>Додати результат</h1>
+
+  <form method="POST" action="/operation_status">
+    <select name="from">
+      $names
+    </select>
+    <select name="to">
+      $names
+    </select>
+
+      <input type="number" min=0 name="balls_1" value="">
+      <input type="number" min=0 name="balls_2" value="">
+
+    <input type="submit" value="Додати">
+  </form>
+<br>
+<a href="/partial" title="Переглянути коротко результати">Переглянути коротко результати</a>
+  <br>
+<a href="/full" title="Переглянути повністю результати">Переглянути повністю результати</a>
+
+
+</body>
+</html>
