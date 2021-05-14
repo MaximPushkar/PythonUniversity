@@ -183,7 +183,7 @@ HOST = ""
 PORT = 8000
 
 if __name__ == '__main__':
-    app = MatchResults("data/names.xml", "data/results.xml")
+    app = MatchResults("data/names.json", "data/results.xml")
     from wsgiref.simple_server import make_server
 
     print(" === Local webserver === ")
