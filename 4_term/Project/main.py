@@ -188,7 +188,18 @@ class Shop:
             form = cgi.FieldStorage(fp=environ["wsgi.input"], environ=environ)
             date, phone = str(form.getfirst("date")), form.getfirst("phone")
 
-            if date and phone and len(in_order.keys()) != 0:
+            valid_order = 1
+            if len(in_order.keys()) == 0:
+                valid_order = 0
+            else:
+                try:
+                    for key in in_order.keys():
+                        item = print_part(key)
+                        a = item[0]
+                except:
+                    valid_order = 0
+
+            if date and phone and valid_order:
                 bill_id_0 = add_bill(date, phone, in_order)
                 in_order = {}
                 params["status"] = "Order has been added to the DataBase"
@@ -360,10 +371,10 @@ class Shop:
                 del_id = form.getfirst("del_id")
                 if part_id and add_part_code and add_category and add_name and add_price:
                     update_part(part_id, add_part_code, add_category, add_name, add_price)
-                    params["result"] = "New part has been added to DB"
+                    params["result"] = "A part has been updated in DB"
                 elif del_id:
-                    delete_car(del_id)
-                    params["result"] = "A car has been deleted from DB"
+                    delete_part(del_id)
+                    params["result"] = "A part has been deleted from DB"
                 else:
                     status = "303 SEE OTHER"
                     headers.append(("Location", "/edit_db/cars"))
