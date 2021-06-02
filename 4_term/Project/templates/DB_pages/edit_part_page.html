@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Edit car</h1>
+
+<form method="POST" action="/edit_db/parts/result?id=$part_id">
+    <input type="text" name="edit_part_code" placeholder="Code" value="$code">
+    <input type="text" name="edit_category" placeholder="Category" value="$category">
+    <input type="text" name="edit_name" placeholder="Name" value="$name">
+    <input type="number" name="edit_price" placeholder="Price" value=$price>
+    <input type="submit" value="edit part">
+</form>
+<br>
+<a href="/edit_db/parts" title="Back">Back</a>
+<br>
+
+</body>
+</html>

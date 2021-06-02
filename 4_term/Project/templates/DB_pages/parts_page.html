@@ -31,12 +31,12 @@
                 </li>
             </ul>
 
-            <form class="d-flex mx-5" action="/">
+            <form class="d-flex mx-5" action="/edit_db/parts">
                 <input class="form-control me-2" name = "name_search" type="search" placeholder="Search name" aria-label="Search" value=$search_value_nam>
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
-            <form class="d-flex" action="/">
+            <form class="d-flex" action="/edit_db/parts">
                 <input class="form-control me-2" name = "cat_search" type="search" placeholder="Search category" aria-label="Search" value=$search_value_cat>
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -52,12 +52,13 @@
         <th scope="col">Part Code</th>
         <th scope="col">Category</th>
         <th scope="col">Price</th>
-        <th scope="col">Add to order</th>
+        <th scope="col">Edit</th>
+        <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
 
-    $on_main_page_html
+    $on_db_parts_page_html
 
     </tbody>
 </table>

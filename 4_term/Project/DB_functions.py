@@ -52,7 +52,7 @@ def create_db_from_zero():
             PRIMARY KEY ("bill_id" AUTOINCREMENT)
         );
         """
-    )  # todo deletion
+    )
     cursor.execute(
         """
         CREATE TABLE "bill_items" (
@@ -62,7 +62,7 @@ def create_db_from_zero():
             "number" INTEGER,
             PRIMARY KEY ("id" AUTOINCREMENT),
             FOREIGN KEY("bill_id") REFERENCES "bill_id" ("bills"),
-            FOREIGN KEY("part_id") REFERENCES "part_id" ("parts") ON DELETE SET NULL
+            FOREIGN KEY("part_id") REFERENCES "part_id" ("parts") ON DELETE NO ACTION
         );
         """
     )
@@ -113,16 +113,49 @@ def delete_car(car_id):
         conn = sqlite3.connect(db_filename)
         cursor = conn.cursor()
 
-        # todo deletion
         cursor.execute("""DELETE from parts where car_id = ?""", (car_id,))
         cursor.execute("""DELETE from cars where car_id = ?""", (car_id,))
 
         conn.commit()
         conn.close()
-        return "car successfully deleted"
 
     except sqlite3.Error as error:
         return "Failed to delete a car from db. Error:  " + str(error)
+
+
+def get_car(car_id):
+    conn = sqlite3.connect(db_filename)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+            SELECT * FROM cars 
+            WHERE car_id = (?);
+        """,
+        (car_id, )
+    )
+    car_info = cursor.fetchone()
+    #  print(car_info)
+
+    conn.commit()
+    conn.close()
+    return car_info
+
+
+def all_cars():
+    conn = sqlite3.connect(db_filename)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+            SELECT * FROM cars 
+        """
+    )
+    cars_info = cursor.fetchall()
+
+    conn.commit()
+    conn.close()
+    return cars_info
 
 
 def add_part(part_code, car_id, category, name, price):
@@ -145,16 +178,16 @@ def add_part(part_code, car_id, category, name, price):
     return inserted_id
 
 
-def update_part(part_id, part_code, car_id, category, name, price):
+def update_part(part_id, part_code, category, name, price):
     conn = sqlite3.connect(db_filename)
     cursor = conn.cursor()
 
     cursor.execute(
         """UPDATE parts
-        SET part_code = (?), car_id = (?), category = (?), name = (?), price  = (?)
+        SET part_code = (?), category = (?), name = (?), price  = (?)
         WHERE part_id = (?);
         """,
-        (part_code, car_id, category, name, price, part_id)
+        (part_code, category, name, price, part_id)
     )
 
     conn.commit()
@@ -166,7 +199,6 @@ def delete_part(part_id):
         conn = sqlite3.connect(db_filename)
         cursor = conn.cursor()
 
-        # todo deletion
         cursor.execute("""DELETE from parts where part_id = ?""", (part_id,))
 
         conn.commit()
@@ -175,6 +207,25 @@ def delete_part(part_id):
 
     except sqlite3.Error as error:
         return "Failed to delete a part from db. Error:  " + str(error)
+
+
+def get_part(part_id):
+    conn = sqlite3.connect(db_filename)
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+            SELECT * FROM parts 
+            WHERE part_id = (?);
+        """,
+        (part_id,)
+    )
+    part_info = cursor.fetchone()
+    #  print(part_info)
+
+    conn.commit()
+    conn.close()
+    return part_info
 
 
 def print_part(part_id):
@@ -331,12 +382,16 @@ def test_db():
     add_part("ty90", car_1, "battery", "Dodge 6СТ-60", 1500)
     add_part("fk69", car_2, "battery", "Bentley 6СТ-80", 1700)
     add_part("fu00", car_3, "battery", "Infiniti 6СТ-30", 1678)
-    # update_part("fu00", car_3, "battery", "battery Infiniti 6СТ-30", 0)
+
+    # get_part(1)
+    # print(all_cars())
+    # print(category_search(""))
+
+    bill_1 = add_bill("2020-12-05", "+380929541205", {1: 1, 3: 2})
+    bill_2 = add_bill("2020-09-14", "+380129544209", {2: 1, 4: 2})
+    # print(print_bill(bill_1))
 
 
 if __name__ == '__main__':
     test_db()
-    print(category_search(""))
-    bill_1 = add_bill("2020-12-05", "+380929541205", {1: 1, 3: 2})
-    bill_2 = add_bill("2020-09-14", "+380129544209", {2: 1, 4: 2})
-    print(print_bill(bill_1))
+    # delete_car(1)
